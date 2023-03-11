@@ -17,30 +17,13 @@ public class ProductController {
 	
 	@Autowired
 	ProductRepository productRepository;
-	
-//	 @PostMapping("/product")
-//	    public ResponseEntity<Products> addProduct(@RequestBody Products product) {
-//	        Products existingProduct = productRepository.findByName(product.getName());
-//	        if (existingProduct != null) {
-//	            Long newQuantity = existingProduct.getQuantity() + product.getQuantity();
-//	            existingProduct.setQuantity(newQuantity);
-//	            productRepository.save(existingProduct);
-//	            return ResponseEntity.ok(existingProduct);
-//	        } else {
-//	            Products savedProduct = productRepository.save(product);
-//	            return ResponseEntity.ok(savedProduct);
-//	        }
-//	 }
-
-
 	 
-
 	     @PostMapping("/add")
 	     public ResponseEntity<Products> addProduct(@RequestBody Products product) {
-	         Optional<Products> existingProduct = productRepository.findById(product.getName());
+	         Optional<Products> existingProduct = productRepository.findById(product.getProductName());
 	         if (existingProduct.isPresent()) {
 	             Products updatedProduct = existingProduct.get();
-	             updatedProduct.setQuantity(updatedProduct.getQuantity() + product.getQuantity());
+	             updatedProduct.setProductQuantity(updatedProduct.getProductQuantity() + product.getProductQuantity());
 	             productRepository.save(updatedProduct);
 	             return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
 	         } else {

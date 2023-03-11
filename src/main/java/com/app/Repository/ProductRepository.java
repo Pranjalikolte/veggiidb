@@ -8,7 +8,7 @@ import com.app.Entity.Products;
 @Repository
 public interface ProductRepository extends JpaRepository< Products ,String> {
 	
-    Products findByName(String name);
+    Products findByproductName(String productName);
 
 
 }
