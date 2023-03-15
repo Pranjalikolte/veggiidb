@@ -1,57 +1,81 @@
 package com.app.Entity;
+import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(name = "products", uniqueConstraints = {@UniqueConstraint(columnNames = "productName")  })
+@DynamicUpdate
 public class Products {
-	
-	private String images;
-	
-	@Id
-	private String productName;
-	private String productDescription;
-	private String category;
-	private String productUnits;
-	private Long productQuantity;
-	private Long productMrp;
-	private Long regular;
-	private Long offer;
-	private String actions;
-	
-	
-	
-	public Products() {}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
+    private Long productId;
 
+  
+    private String productName;
+    
+    private String productDescription;
+    
+    private String productUnits;
+    
+    private Long productQuantity;
+    
+    private Long productMrp;
 
+    private Long regular;
+    
+    private String offer;
 
-	public Products(String images, String productName, String productDescription, String category, String productUnits,
-			Long productQuantity, Long productMrp, Long regular, Long offer, String actions) {
+	@CreationTimestamp
+	private LocalDateTime dateCreated;
+
+	@UpdateTimestamp
+	private LocalDateTime dateUpdated;
+    
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id" , referencedColumnName="categoryId")
+    private Category category;
+    
+    
+    public Products() {}
+    
+	public Products(Long productId, String productName, String productDescription, String productUnits,
+			Long productQuantity, Long productMrp, Long regular, String offer, Category category) {
 		super();
-		this.images = images;
+		this.productId = productId;
 		this.productName = productName;
 		this.productDescription = productDescription;
-		this.category = category;
 		this.productUnits = productUnits;
 		this.productQuantity = productQuantity;
 		this.productMrp = productMrp;
 		this.regular = regular;
 		this.offer = offer;
-		this.actions = actions;
+		this.category = category;
+	}
+
+	public Long getProductId() {
+		return productId;
 	}
 
 
-
-	public String getImages() {
-		return images;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
-
-
-
-	public void setImages(String images) {
-		this.images = images;
-	}
-
 
 
 	public String getProductName() {
@@ -59,109 +83,68 @@ public class Products {
 	}
 
 
-
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
 
 
+	public Category getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 
 	public String getProductDescription() {
 		return productDescription;
 	}
 
-
-
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
-
-
-
-	public String getCategory() {
-		return category;
-	}
-
-
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-
 
 	public String getProductUnits() {
 		return productUnits;
 	}
 
-
-
 	public void setProductUnits(String productUnits) {
 		this.productUnits = productUnits;
 	}
-
-
 
 	public Long getProductQuantity() {
 		return productQuantity;
 	}
 
-
-
 	public void setProductQuantity(Long productQuantity) {
 		this.productQuantity = productQuantity;
 	}
-
-
 
 	public Long getProductMrp() {
 		return productMrp;
 	}
 
-
-
 	public void setProductMrp(Long productMrp) {
 		this.productMrp = productMrp;
 	}
-
-
 
 	public Long getRegular() {
 		return regular;
 	}
 
-
-
 	public void setRegular(Long regular) {
 		this.regular = regular;
 	}
 
-
-
-	public Long getOffer() {
+	public String getOffer() {
 		return offer;
 	}
 
-
-
-	public void setOffer(Long offer) {
+	public void setOffer(String offer) {
 		this.offer = offer;
-	}
-
-
-
-	public String getActions() {
-		return actions;
-	}
-
-
-
-	public void setActions(String actions) {
-		this.actions = actions;
-	}
+	};
+    
 	
 	
-	
-	
-
 }
