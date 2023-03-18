@@ -24,13 +24,10 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long productId;
-
-  
+    
     private String productName;
     
     private String productDescription;
-    
-    private String productUnits;
     
     private Long productQuantity;
     
@@ -51,50 +48,43 @@ public class Products {
     @JoinColumn(name = "category_id" , referencedColumnName="categoryId")
     private Category category;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "units_id" , referencedColumnName="unitsId")
+    private Units units ;
     
     public Products() {}
-    
-	public Products(Long productId, String productName, String productDescription, String productUnits,
-			Long productQuantity, Long productMrp, Long regular, String offer, Category category) {
+
+	public Products(Long productId, String productName, String productDescription, 
+			Long productQuantity, Long productMrp, Long regular, String offer, LocalDateTime dateCreated,
+			LocalDateTime dateUpdated, Category category, Units units) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
 		this.productDescription = productDescription;
-		this.productUnits = productUnits;
 		this.productQuantity = productQuantity;
 		this.productMrp = productMrp;
 		this.regular = regular;
 		this.offer = offer;
+		this.dateCreated = dateCreated;
+		this.dateUpdated = dateUpdated;
 		this.category = category;
+		this.units = units;
 	}
 
 	public Long getProductId() {
 		return productId;
 	}
 
-
 	public void setProductId(Long productId) {
 		this.productId = productId;
 	}
-
 
 	public String getProductName() {
 		return productName;
 	}
 
-
 	public void setProductName(String productName) {
 		this.productName = productName;
-	}
-
-
-	public Category getCategory() {
-		return category;
-	}
-
-
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 
 	public String getProductDescription() {
@@ -104,15 +94,6 @@ public class Products {
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
 	}
-
-	public String getProductUnits() {
-		return productUnits;
-	}
-
-	public void setProductUnits(String productUnits) {
-		this.productUnits = productUnits;
-	}
-
 	public Long getProductQuantity() {
 		return productQuantity;
 	}
@@ -143,8 +124,41 @@ public class Products {
 
 	public void setOffer(String offer) {
 		this.offer = offer;
-	};
+	}
+
+	public LocalDateTime getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(LocalDateTime dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public LocalDateTime getDateUpdated() {
+		return dateUpdated;
+	}
+
+	public void setDateUpdated(LocalDateTime dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public Units getUnits() {
+		return units;
+	}
+
+	public void setUnits(Units units) {
+		this.units = units;
+	}
     
+	
 	
 	
 }

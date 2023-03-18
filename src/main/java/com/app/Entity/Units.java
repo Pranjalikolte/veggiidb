@@ -1,13 +1,11 @@
 package com.app.Entity;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,53 +15,53 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "category", uniqueConstraints = { @UniqueConstraint(columnNames = "categoryId"), @UniqueConstraint(columnNames = "categoryName")  })
-public class Category {
+@Table(name = "units", uniqueConstraints = { @UniqueConstraint(columnNames = "unitsId"), @UniqueConstraint(columnNames = "unitsName")  })
+public class Units {
 	
 	
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long categoryId;
+	    private Long unitsId;
 
-	    private String categoryName;
-
+	    private String unitsName;
+	    
 	    @CreationTimestamp
 		private LocalDateTime dateCreated;
 
 		@UpdateTimestamp
 		private LocalDateTime dateUpdated;
+	    
 
-	    @OneToMany(mappedBy = "category")
+	    @OneToMany(mappedBy = "units")
 	    private List<Products> products;
 	    
-	    public Category() {}
-	    
+	    public Units() {}
 	    
 	    
 
-		public Category(Long categoryId, String categoryName) {
+		public Units(Long unitsId, String unitsName) {
 			super();
-			this.categoryId = categoryId;
-			this.categoryName = categoryName;
-			
+			this.unitsId = unitsId;
+			this.unitsName = unitsName;
 		}
 
-		public Long getCategoryId() {
-			return categoryId;
+
+
+		public Long getUnitsId() {
+			return unitsId;
 		}
 
-		public void setCategoryId(Long categoryId) {
-			this.categoryId = categoryId;
+		public void setUnitsId(Long unitsId) {
+			this.unitsId = unitsId;
 		}
 
-		public String getCategoryName() {
-			return categoryName;
+		public String getUnitsName() {
+			return unitsName;
 		}
 
-		public void setCategoryName(String categoryName) {
-			this.categoryName = categoryName;
+		public void setUnitsName(String unitsName) {
+			this.unitsName = unitsName;
 		}
-
 
 
 
@@ -73,11 +71,9 @@ public class Category {
 
 
 
-
 		public void setDateCreated(LocalDateTime dateCreated) {
 			this.dateCreated = dateCreated;
 		}
-
 
 
 
@@ -87,14 +83,12 @@ public class Category {
 
 
 
-
 		public void setDateUpdated(LocalDateTime dateUpdated) {
 			this.dateUpdated = dateUpdated;
 		}
-
 		
 
 		
-	
-
+	    
+	    
 }

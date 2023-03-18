@@ -21,10 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.app.Entity.Category;
 import com.app.Entity.Products;
+import com.app.Entity.Units;
 import com.app.Repository.CategoryRepository;
 import com.app.Repository.ProductRepository;
+import com.app.Repository.UnitsRepository;
 import com.app.Service.CategoryService;
 import com.app.Service.ProductService;
+import com.app.Service.UnitsService;
 
 import DTO.ProductDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -34,12 +37,18 @@ public class ProductController {
 
 	@Autowired
 	ProductRepository productRepository;
+	
+	@Autowired
+	UnitsRepository unitsRepository;
 
 	@Autowired
 	CategoryRepository categoryRepository;
 
 	@Autowired
 	ProductService productService;
+	
+	@Autowired
+	UnitsService unitsService;
 
 	@Autowired
 	CategoryService categoryService;
@@ -115,6 +124,28 @@ public class ProductController {
 	public List<Category> getAllCategories() {
 		return categoryService.getAllCategories();
 	}
+	
+	//add units
+	@PostMapping("/addunits")
+	public ResponseEntity<Units> createUnits(@RequestBody Units units) {
+		Units savedUnits = unitsService.saveUnits(units);
+		return ResponseEntity.ok().body(savedUnits);
+	}
+	
+	// Delete category by ID
+		@DeleteMapping("/deleteunit/{unitsId}")
+		public ResponseEntity<String> deleteUnits(@PathVariable Long unitsId) {
+			unitsService.deleteUnitsById(unitsId);
+			return ResponseEntity.ok().body("Unit with ID " + unitsId + " has been deleted.");
+		}
+		
+		// Get all categories
+		@GetMapping("/getallunits")
+		public List<Units> getAllUnits() {
+			return unitsService.getAllUnits();
+		}
+		
+		
 
 	// add product
 	@PostMapping("/addproduct")
@@ -160,9 +191,7 @@ public class ProductController {
 		if (productDTO.getProductDescription() != null) {
 			product.setProductDescription(productDTO.getProductDescription());
 		}
-		if (productDTO.getProductUnits() != null) {
-			product.setProductUnits(productDTO.getProductUnits());
-		}
+
 		if (productDTO.getProductQuantity() != null) {
 			product.setProductQuantity(productDTO.getProductQuantity());
 		}
@@ -184,12 +213,21 @@ public class ProductController {
 			}
 			product.setCategory(category);
 		}
+		if (productDTO.getUnitsId() != null) {
+			Units units = unitsRepository.findByUnitsId(productDTO.getUnitsId());
+			if (units == null) {
+				units = new Units();
+				units.setUnitsId(productDTO.getUnitsId());
+				unitsRepository.save(units);
+			}
+			product.setUnits(units);
+		}
 		Products updatedProduct = productRepository.save(product);
 		return ResponseEntity.ok(updatedProduct);
 	}
 
 	// delete product by product id
-	@DeleteMapping("/{productId}")
+	@DeleteMapping("product/{productId}")
 	public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
 		Optional<Products> optionalProduct = productRepository.findById(productId);
 		if (!optionalProduct.isPresent()) {
