@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.Entity.Category;
@@ -101,26 +102,35 @@ public class ProductController {
 		Category savedCategory = categoryService.saveCategory(category);
 		return ResponseEntity.ok().body(savedCategory);
 	}
-	
+
 	// Delete category by ID
 	@DeleteMapping("/deletecategory/{categoryId}")
 	public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
-	    categoryService.deleteCategoryById(categoryId);
-	    return ResponseEntity.ok().body("Category with ID " + categoryId + " has been deleted.");
+		categoryService.deleteCategoryById(categoryId);
+		return ResponseEntity.ok().body("Category with ID " + categoryId + " has been deleted.");
 	}
 
 	// Get all categories
 	@GetMapping("/getallcategories")
 	public List<Category> getAllCategories() {
-	    return categoryService.getAllCategories();
+		return categoryService.getAllCategories();
 	}
-
 
 	// add product
 	@PostMapping("/addproduct")
 	public Products createProduct(@RequestBody Products product) {
 		return productRepository.save(product);
 	}
+
+//	@PostMapping("/products")
+//	public ResponseEntity<Products> createProduct(@RequestBody Products product) {
+//	    Long categoryId = product.getCategory().getCategoryId();
+//	    Category category = categoryRepository.findById(categoryId).orElseThrow();
+//	    product.setCategory(category);
+//	    
+//	    Products savedProduct = productRepository.save(product);
+//	    return ResponseEntity.ok(savedProduct);
+//	}
 
 	// get product by id
 	@GetMapping("/getproducts/{productId}")
@@ -164,6 +174,15 @@ public class ProductController {
 		}
 		if (productDTO.getOffer() != null) {
 			product.setOffer(productDTO.getOffer());
+		}
+		if (productDTO.getCategoryId() != null) {
+			Category category = categoryRepository.findByCategoryId(productDTO.getCategoryId());
+			if (category == null) {
+				category = new Category();
+				category.setCategoryId(productDTO.getCategoryId());
+				categoryRepository.save(category);
+			}
+			product.setCategory(category);
 		}
 		Products updatedProduct = productRepository.save(product);
 		return ResponseEntity.ok(updatedProduct);

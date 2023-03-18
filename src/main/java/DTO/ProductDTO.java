@@ -18,6 +18,9 @@ public class ProductDTO {
 
 	private String offer;
 	
+	private Long categoryId;
+
+	
 	
 
 	public Long getProductId() {
@@ -83,6 +86,16 @@ public class ProductDTO {
 	public void setOffer(String offer) {
 		this.offer = offer;
 	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	
 	
 	
 	
